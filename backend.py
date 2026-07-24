@@ -5,7 +5,11 @@ import uvicorn
 
 app = FastAPI()
 
-df = pd.read_csv("data/fantasy_stats.csv")
+# ✅ Read from Google Sheets
+sheet_id = "1xRj1OEhzIh2TbgZoZ-90iFfWfUDTvtPsGQEkVFb5A0U"
+sheet_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
+df = pd.read_csv(sheet_url)
+
 features = ["targets", "receptions", "yards", "tds"]
 X = df[features]
 y = df["fantasy_points"]
@@ -26,13 +30,13 @@ def predict_player(player_name: str):
         predicted = model.predict(X_player)[0]
         actual = float(player["fantasy_points"].values[0])
         position = str(player["position"].values[0])
-        image_url = str(player["image_url"].values[0])  # ✅ NEW
+        image_url = str(player["image_url"].values[0])
         return {
             "player": player_name,
             "predicted_points": float(predicted),
             "actual_points": actual,
             "position": position,
-            "image_url": image_url  # ✅ NEW
+            "image_url": image_url
         }
     except Exception as e:
         print(f"Error predicting {player_name}: {e}")
