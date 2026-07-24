@@ -71,6 +71,12 @@ def get_players():
     data = get_player_data()
     return [{"player": p["player"]} for p in data]
 
+# ✅ NEW - returns all player data in one call
+@app.get("/all_players")
+def get_all_players():
+    data = get_player_data()
+    return data
+
 @app.get("/predict/{player_name}")
 def predict_player(player_name: str):
     try:
