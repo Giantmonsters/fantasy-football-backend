@@ -5,24 +5,28 @@ import uvicorn
 
 app = FastAPI()
 
-# ✅ Read from Google Sheets
 sheet_id = "1xRj1OEhzIh2TbgZoZ-90iFfWfUDTvtPsGQEkVFb5A0U"
 sheet_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
-df = pd.read_csv(sheet_url)
 
 features = ["targets", "receptions", "yards", "tds"]
-X = df[features]
-y = df["fantasy_points"]
-model = LinearRegression()
-model.fit(X, y)
+
+def get_data_and_model():
+    df = pd.read_csv(sheet_url)
+    X = df[features]
+    y = df["fantasy_points"]
+    model = LinearRegression()
+    model.fit(X, y)
+    return df, model
 
 @app.get("/players")
 def get_players():
+    df, _ = get_data_and_model()
     return [{"player": name} for name in df["player"].tolist()]
 
 @app.get("/predict/{player_name}")
 def predict_player(player_name: str):
     try:
+        df, model = get_data_and_model()
         player = df[df["player"].str.lower() == player_name.lower()]
         if player.empty:
             return {"error": "Player not found"}
