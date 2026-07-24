@@ -53,4 +53,4 @@ def get_player_data():
             "player": player.get('full_name', ''),
             "position": player.get('position', ''),
             "actual_points": round(actual, 1),
-            "predicted_points": round(predicted,
+            "predicted_points": round(predicted, 1),
