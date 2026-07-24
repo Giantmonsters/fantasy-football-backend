@@ -53,41 +53,4 @@ def get_player_data():
             "player": player.get('full_name', ''),
             "position": player.get('position', ''),
             "actual_points": round(actual, 1),
-            "predicted_points": round(predicted, 1),
-            "image_url": image_url
-        })
-    
-    result.sort(key=lambda x: x['actual_points'], reverse=True)
-    
-    # ✅ Store in cache
-    _cache = result
-    _cache_time = datetime.now()
-    print(f"Cached {len(result)} players")
-    
-    return result
-
-@app.get("/players")
-def get_players():
-    data = get_player_data()
-    return [{"player": p["player"]} for p in data]
-
-# ✅ NEW - returns all player data in one call
-@app.get("/all_players")
-def get_all_players():
-    data = get_player_data()
-    return data
-
-@app.get("/predict/{player_name}")
-def predict_player(player_name: str):
-    try:
-        data = get_player_data()
-        player = next((p for p in data if p["player"].lower() == player_name.lower()), None)
-        if not player:
-            return {"error": "Player not found"}
-        return player
-    except Exception as e:
-        print(f"Error: {e}")
-        return {"error": str(e)}
-
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+            "predicted_points": round(predicted,
