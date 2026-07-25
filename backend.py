@@ -35,7 +35,10 @@ def get_player_data():
         if actual == 0:
             continue
         espn_id = player.get('espn_id')
-        image_url = f"https://a.espncdn.com/i/headshots/nfl/players/full/{espn_id}.png" if espn_id else ""
+        if espn_id:
+            image_url = f"https://a.espncdn.com/i/headshots/nfl/players/full/{espn_id}.png"
+        else:
+            image_url = f"https://sleepercdn.com/content/nfl/players/thumb/{player_id}.jpg"
         result.append({
             "player": player.get('full_name', ''),
             "position": player.get('position', ''),
