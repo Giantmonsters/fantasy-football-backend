@@ -16,7 +16,6 @@ PROJECTIONS_URL = "https://api.sleeper.app/v1/projections/nfl/regular/2025"
 # LAST_WEEK_PROJ = "https://api.sleeper.app/v1/projections/nfl/2026/1"
 # THIS_WEEK_PROJ = "https://api.sleeper.app/v1/projections/nfl/2026/2"
 
-# ✅ Added K and DEF
 POSITIONS = ["QB", "RB", "WR", "TE", "K", "DEF"]
 
 _cache = None
@@ -54,7 +53,6 @@ def get_player_data():
         player_stats = stats.get(player_id, {})
         player_proj = projections.get(player_id, {})
 
-        # ✅ Use pts_ppr for skill positions, pts_std for K and DEF
         position = player.get('position', '')
         if position in ["K", "DEF"]:
             actual = player_stats.get('pts_std', 0)
@@ -66,14 +64,22 @@ def get_player_data():
         if actual == 0:
             continue
 
+        # ✅ Fix DEF player name
+        player_name = player.get('full_name', '')
+        if position == 'DEF' and not player_name:
+            player_name = f"{player.get('team', '')} D/ST"
+
+        # ✅ Fix image URLs
         espn_id = player.get('espn_id')
-        if espn_id:
+        if position == 'DEF':
+            image_url = f"https://sleepercdn.com/images/team_logos/nfl/{player.get('team', '').lower()}.jpg"
+        elif espn_id:
             image_url = f"https://a.espncdn.com/i/headshots/nfl/players/full/{espn_id}.png"
         else:
             image_url = f"https://sleepercdn.com/content/nfl/players/thumb/{player_id}.jpg"
 
         result.append({
-            "player": player.get('full_name', ''),
+            "player": player_name,
             "position": position,
             "team": player.get('team', 'FA'),
             "age": calculate_age(player.get('birth_date')),
@@ -82,7 +88,6 @@ def get_player_data():
             "injury_notes": player.get('injury_notes', None),
             "actual_points": round(actual, 1),
             "predicted_points": round(predicted, 1),
-            # ✅ Placeholder for weekly data - ready for September
             "last_week_actual": round(actual, 1),
             "last_week_predicted": round(predicted, 1),
             "this_week_projected": round(predicted, 1),
