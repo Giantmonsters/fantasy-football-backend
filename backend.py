@@ -12,6 +12,20 @@ PROJECTIONS_URL = "https://api.sleeper.app/v1/projections/nfl/regular/2025"
 
 POSITIONS = ["QB", "RB", "WR", "TE", "K", "DEF"]
 
+# ✅ Manual ESPN ID overrides for players missing ESPN ID in Sleeper
+ESPN_ID_OVERRIDES = {
+    "7564": "4362628",   # Ja'Marr Chase
+    "8138": "4379399",   # James Cook
+    "9226": "4429160",   # De'Von Achane
+    "9509": "4430807",   # Bijan Robinson
+    "9221": "4429795",   # Jahmyr Gibbs
+    "10859": "4426515",  # Puka Nacua
+    "10863": "4430878",  # Jaxon Smith-Njigba
+    "10857": "4360310",  # Trevor Lawrence
+    "11565": "4374302",  # Amon-Ra St. Brown
+    "10860": "4361307",  # Trey McBride
+}
+
 _cache = None
 _cache_time = None
 CACHE_DURATION = timedelta(hours=6)
@@ -62,7 +76,9 @@ def get_player_data():
         if position == 'DEF' and not player_name:
             player_name = f"{player.get('team', '')} D/ST"
 
-        espn_id = player.get('espn_id')
+        # ✅ Use override if ESPN ID missing
+        espn_id = player.get('espn_id') or ESPN_ID_OVERRIDES.get(player_id)
+
         if position == 'DEF':
             image_url = f"https://a.espncdn.com/i/teamlogos/nfl/500/{player.get('team', '').lower()}.png"
         elif espn_id:
