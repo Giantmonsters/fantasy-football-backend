@@ -72,7 +72,8 @@ def get_player_data():
         # ✅ Fix image URLs
         espn_id = player.get('espn_id')
         if position == 'DEF':
-            image_url = f"https://sleepercdn.com/images/team_logos/nfl/{player.get('team', '').lower()}.jpg"
+            # ✅ Use ESPN team logos
+            image_url = f"https://a.espncdn.com/i/teamlogos/nfl/500/{player.get('team', '').lower()}.png"
         elif espn_id:
             image_url = f"https://a.espncdn.com/i/headshots/nfl/players/full/{espn_id}.png"
         else:
