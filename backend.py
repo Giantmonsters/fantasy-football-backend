@@ -14,7 +14,7 @@ POSITIONS = ["QB", "RB", "WR", "TE", "K", "DEF"]
 
 # ✅ Manual ESPN ID overrides for players missing ESPN ID in Sleeper
 ESPN_ID_OVERRIDES = {
-    # Fixed existing overrides
+    # Already confirmed correct
     "9493": "4426515",   # Puka Nacua
     "9488": "4430878",   # Jaxon Smith-Njigba
     "7523": "4360310",   # Trevor Lawrence
@@ -31,24 +31,23 @@ ESPN_ID_OVERRIDES = {
     "11563": "4426338",  # Bo Nix
     "12508": "4689114",  # Jaxson Dart
     "9228": "4432580",   # Bryce Young
-    # RB
+    # RB - corrected
     "9224": "4362238",   # Chase Brown
-    "8150": "4430181",   # Kyren Williams
+    "8150": "4430737",   # Kyren Williams ✅ fixed
     "7543": "4239996",   # Travis Etienne
-    "12527": "4685717",  # Ashton Jeanty
+    "12527": "4890973",  # Ashton Jeanty ✅ fixed
     "8155": "4372168",   # Breece Hall
     "7588": "4372016",   # Javonte Williams
-    "8228": "4430259",   # Jaylen Warren
-    # WR
-    "8137": "4360622",   # George Pickens
-    "8144": "4372013",   # Chris Olave
-    "9997": "4430185",   # Zay Flowers
-    "7569": "4372168",   # Nico Collins
-    "7525": "4241389",   # DeVonta Smith
-    "8112": "4372143",   # Drake London
-    "8148": "4430188",   # Jameson Williams
-    # TE
-    "7553": "4372016",   # Kyle Pitts
+    # WR - corrected
+    "8137": "4426354",   # George Pickens ✅ fixed
+    "8144": "4361370",   # Chris Olave ✅ fixed
+    "9997": "4429615",   # Zay Flowers ✅ fixed
+    "7569": "4258173",   # Nico Collins ✅ fixed
+    "7525": "4241478",   # DeVonta Smith ✅ fixed
+    "8112": "4426502",   # Drake London ✅ fixed
+    "8148": "4426388",   # Jameson Williams ✅ fixed
+    # TE - corrected
+    "7553": "4360248",   # Kyle Pitts ✅ fixed
     "11604": "4432665",  # Brock Bowers
 }
 
