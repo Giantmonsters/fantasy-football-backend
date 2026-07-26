@@ -113,19 +113,21 @@ def predict_player(player_name: str):
     except Exception as e:
         return {"error": str(e)}
 
-# ✅ NEW - Player news from ESPN
+# ✅ Player news from ESPN
 @app.get("/news/{espn_id}")
 def get_player_news(espn_id: str):
     try:
         url = f"https://site.api.espn.com/apis/common/v3/sports/football/nfl/athletes/{espn_id}/overview"
         response = requests.get(url).json()
         news_items = []
-        news = response.get('news', {}).get('items', [])
+        news = response.get('news', [])
+        if isinstance(news, dict):
+            news = news.get('items', [])
         for item in news[:5]:
             news_items.append({
                 "headline": item.get('headline', ''),
                 "description": item.get('description', ''),
-                "published": item.get('published', ''),
+                "published": item.get('lastModified', ''),
                 "link": item.get('links', {}).get('web', {}).get('href', '')
             })
         return {"news": news_items}
