@@ -7,14 +7,8 @@ app = FastAPI()
 
 PLAYERS_URL = "https://api.sleeper.app/v1/players/nfl"
 
-# ✅ 2025 full season data (placeholder until 2026 season starts)
 STATS_URL = "https://api.sleeper.app/v1/stats/nfl/regular/2025"
 PROJECTIONS_URL = "https://api.sleeper.app/v1/projections/nfl/regular/2025"
-
-# ✅ When 2026 season starts, use weekly endpoints like:
-# LAST_WEEK_STATS = "https://api.sleeper.app/v1/stats/nfl/2026/1"
-# LAST_WEEK_PROJ = "https://api.sleeper.app/v1/projections/nfl/2026/1"
-# THIS_WEEK_PROJ = "https://api.sleeper.app/v1/projections/nfl/2026/2"
 
 POSITIONS = ["QB", "RB", "WR", "TE", "K", "DEF"]
 
@@ -64,15 +58,12 @@ def get_player_data():
         if actual == 0:
             continue
 
-        # ✅ Fix DEF player name
         player_name = player.get('full_name', '')
         if position == 'DEF' and not player_name:
             player_name = f"{player.get('team', '')} D/ST"
 
-        # ✅ Fix image URLs
         espn_id = player.get('espn_id')
         if position == 'DEF':
-            # ✅ Use ESPN team logos
             image_url = f"https://a.espncdn.com/i/teamlogos/nfl/500/{player.get('team', '').lower()}.png"
         elif espn_id:
             image_url = f"https://a.espncdn.com/i/headshots/nfl/players/full/{espn_id}.png"
@@ -92,7 +83,8 @@ def get_player_data():
             "last_week_actual": round(actual, 1),
             "last_week_predicted": round(predicted, 1),
             "this_week_projected": round(predicted, 1),
-            "image_url": image_url
+            "image_url": image_url,
+            "espn_id": str(espn_id) if espn_id else None
         })
 
     result.sort(key=lambda x: x['actual_points'], reverse=True)
@@ -120,6 +112,25 @@ def predict_player(player_name: str):
         return player
     except Exception as e:
         return {"error": str(e)}
+
+# ✅ NEW - Player news from ESPN
+@app.get("/news/{espn_id}")
+def get_player_news(espn_id: str):
+    try:
+        url = f"https://site.api.espn.com/apis/common/v3/sports/football/nfl/athletes/{espn_id}/overview"
+        response = requests.get(url).json()
+        news_items = []
+        news = response.get('news', {}).get('items', [])
+        for item in news[:5]:
+            news_items.append({
+                "headline": item.get('headline', ''),
+                "description": item.get('description', ''),
+                "published": item.get('published', ''),
+                "link": item.get('links', {}).get('web', {}).get('href', '')
+            })
+        return {"news": news_items}
+    except Exception as e:
+        return {"news": [], "error": str(e)}
 
 @app.on_event("startup")
 async def startup_event():
