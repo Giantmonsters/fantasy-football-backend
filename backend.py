@@ -30,24 +30,24 @@ ESPN_ID_OVERRIDES = {
     "11560": "4431611",  # Caleb Williams
     "11563": "4426338",  # Bo Nix
     "12508": "4689114",  # Jaxson Dart
-    "9228": "4432580",   # Bryce Young
-    # RB - corrected
+    "9228": "4685720",   # Bryce Young ✅ fixed
+    # RB
     "9224": "4362238",   # Chase Brown
-    "8150": "4430737",   # Kyren Williams ✅ fixed
+    "8150": "4430737",   # Kyren Williams
     "7543": "4239996",   # Travis Etienne
-    "12527": "4890973",  # Ashton Jeanty ✅ fixed
-    "8155": "4372168",   # Breece Hall
-    "7588": "4372016",   # Javonte Williams
-    # WR - corrected
-    "8137": "4426354",   # George Pickens ✅ fixed
-    "8144": "4361370",   # Chris Olave ✅ fixed
-    "9997": "4429615",   # Zay Flowers ✅ fixed
-    "7569": "4258173",   # Nico Collins ✅ fixed
-    "7525": "4241478",   # DeVonta Smith ✅ fixed
-    "8112": "4426502",   # Drake London ✅ fixed
-    "8148": "4426388",   # Jameson Williams ✅ fixed
-    # TE - corrected
-    "7553": "4360248",   # Kyle Pitts ✅ fixed
+    "12527": "4890973",  # Ashton Jeanty
+    "8155": "4427366",   # Breece Hall ✅ fixed
+    "7588": "4361579",   # Javonte Williams ✅ fixed
+    # WR
+    "8137": "4426354",   # George Pickens
+    "8144": "4361370",   # Chris Olave
+    "9997": "4429615",   # Zay Flowers
+    "7569": "4258173",   # Nico Collins
+    "7525": "4241478",   # DeVonta Smith
+    "8112": "4426502",   # Drake London
+    "8148": "4426388",   # Jameson Williams
+    # TE
+    "7553": "4360248",   # Kyle Pitts
     "11604": "4432665",  # Brock Bowers
 }
 
@@ -101,7 +101,6 @@ def get_player_data():
         if position == 'DEF' and not player_name:
             player_name = f"{player.get('team', '')} D/ST"
 
-        # ✅ Use override if ESPN ID missing
         espn_id = player.get('espn_id') or ESPN_ID_OVERRIDES.get(player_id)
 
         if position == 'DEF':
@@ -154,7 +153,6 @@ def predict_player(player_name: str):
     except Exception as e:
         return {"error": str(e)}
 
-# ✅ Player news from ESPN
 @app.get("/news/{espn_id}")
 def get_player_news(espn_id: str):
     try:
