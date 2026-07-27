@@ -14,7 +14,6 @@ POSITIONS = ["QB", "RB", "WR", "TE", "K", "DEF"]
 
 # ✅ Manual ESPN ID overrides for players missing ESPN ID in Sleeper
 ESPN_ID_OVERRIDES = {
-    # Already confirmed correct
     "9493": "4426515",   # Puka Nacua
     "9488": "4430878",   # Jaxon Smith-Njigba
     "7523": "4360310",   # Trevor Lawrence
@@ -25,20 +24,17 @@ ESPN_ID_OVERRIDES = {
     "9226": "4429160",   # De'Von Achane
     "9509": "4430807",   # Bijan Robinson
     "9221": "4429795",   # Jahmyr Gibbs
-    # QB
     "11564": "4431452",  # Drake Maye
     "11560": "4431611",  # Caleb Williams
     "11563": "4426338",  # Bo Nix
     "12508": "4689114",  # Jaxson Dart
-    "9228": "4685720",   # Bryce Young ✅ fixed
-    # RB
+    "9228": "4685720",   # Bryce Young
     "9224": "4362238",   # Chase Brown
     "8150": "4430737",   # Kyren Williams
     "7543": "4239996",   # Travis Etienne
     "12527": "4890973",  # Ashton Jeanty
-    "8155": "4427366",   # Breece Hall ✅ fixed
-    "7588": "4361579",   # Javonte Williams ✅ fixed
-    # WR
+    "8155": "4427366",   # Breece Hall
+    "7588": "4361579",   # Javonte Williams
     "8137": "4426354",   # George Pickens
     "8144": "4361370",   # Chris Olave
     "9997": "4429615",   # Zay Flowers
@@ -46,7 +42,6 @@ ESPN_ID_OVERRIDES = {
     "7525": "4241478",   # DeVonta Smith
     "8112": "4426502",   # Drake London
     "8148": "4426388",   # Jameson Williams
-    # TE
     "7553": "4360248",   # Kyle Pitts
     "11604": "4432665",  # Brock Bowers
 }
@@ -116,6 +111,7 @@ def get_player_data():
             "team": player.get('team', 'FA'),
             "age": calculate_age(player.get('birth_date')),
             "years_exp": player.get('years_exp', 0),
+            "college": player.get('college', None),  # ✅ College added
             "injury_status": player.get('injury_status', None),
             "injury_notes": player.get('injury_notes', None),
             "actual_points": round(actual, 1),
